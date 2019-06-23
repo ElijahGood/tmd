@@ -7,7 +7,6 @@ use yii\filters\AccessControl;
 use yii\web\Controller;
 use yii\web\Response;
 use yii\filters\VerbFilter;
-use app\models\ContactForm;
 
 use app\models\AddForm;
 
@@ -57,37 +56,6 @@ class SiteController extends Controller
     }
 
 
-    public function actionIndex()
-    {
-        $model = new AddForm();
-        if ($model->load(Yii::$app->request->post()) && $model->validate()) {
-            $req = Yii::$app->request->post();
-            $userData = $model->formUserData($req);
-            $model->addMessage($userData);
-        }
-        return $this->render('add', [
-            'model' => $model,
-        ]);
-    }
-
-    /**
-     * Displays contact page.
-     *
-     * @return Response|string
-     */
-    public function actionContact()
-    {
-        $model = new ContactForm();
-        if ($model->load(Yii::$app->request->post()) && $model->contact(Yii::$app->params['adminEmail'])) {
-            Yii::$app->session->setFlash('contactFormSubmitted');
-
-            return $this->refresh();
-        }
-        return $this->render('contact', [
-            'model' => $model,
-        ]);
-    }
-
     /**
      * Displays add page.
      *
@@ -100,10 +68,16 @@ class SiteController extends Controller
             $req = Yii::$app->request->post();
             $userData = $model->formUserData($req);
             $model->addMessage($userData);
+            return $this->render('add', [
+                'model' => $model,
+                'alertMsg' => 'Your message was send.',
+            ]);
+        } else {
+            return $this->render('add', [
+                'model' => $model,
+            ]);
         }
-        return $this->render('add', [
-            'model' => $model,
-        ]);
+
     }
 
 }

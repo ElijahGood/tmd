@@ -14,9 +14,18 @@ use yii\captcha\Captcha;
 <div class="site-contact">
     <h1>Add message</h1>
 
-        <p>
-            Fill all fields to create new message.
-        </p>
+
+        <?php
+        if (isset($alertMsg)) {
+            echo '<p>'.
+                $alertMsg
+                .'</p>';
+        } else {
+            echo '<p>
+                    Fill all fields to create new message.
+                </p>';
+        }
+        ?>
 
         <div class="row">
             <div class="col-lg-5">
@@ -32,7 +41,7 @@ use yii\captcha\Captcha;
                 ]) ?>
 
                 <div class="form-group">
-                    <?= Html::submitButton('Submit', ['class' => 'btn btn-primary', 'name' => 'add-button']) ?>
+                    <?= Html::submitButton('Submit', ['class' => 'btn btn-primary', 'id' => 'submitBtn', 'name' => 'add-button']) ?>
                 </div>
 
                 <?php ActiveForm::end(); ?>
@@ -41,3 +50,7 @@ use yii\captcha\Captcha;
         </div>
 
 </div>
+<?php
+    if (isset($alertMsg)) {
+        unset($alertMsg);
+    }
